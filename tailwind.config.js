@@ -20,6 +20,12 @@ export default {
 
         "theme-accent": "#5DECBF",
       },
+      fontFamily: {
+        "theme-primary-font": "'Nunito', sans-serif",
+      },
+      boxShadow: {
+        "theme-chat-shadow": "0px 4px 16px 3px rgba(52, 53, 65, 0.08);",
+      },
     },
   },
   plugins: [],

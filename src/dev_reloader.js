@@ -25,6 +25,7 @@ chrome.runtime.onInstalled.addListener(async () => {
     ws.onopen = function () {
       console.log("Connected to the server");
       ws.send("Hello, Server!");
+      keepAlive();
     };
 
     // Event listener for messages from the server

@@ -57,3 +57,14 @@ button:focus-visible {
 .addgpt_background_gradient {
   background: linear-gradient(170.49deg, #f8f9ff 30.51%, #6b8bf5 99.51%);
 }
+
+.addgpt_chat_btn_gradient {
+  background: linear-gradient(
+    270deg,
+    #f8f9ff 77.42%,
+    rgba(248, 249, 255, 0) 114.52%
+  );
+}
+.addgpt_chat_btn_gradient:hover {
+  background: theme(colors.theme-accent);
+}
