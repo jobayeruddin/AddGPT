@@ -11,6 +11,19 @@ chrome.runtime.onInstalled.addListener(async () => {
 
     return scripts;
   };
+  function keepAlive(webSocket) {
+    const keepAliveIntervalId = setInterval(
+      () => {
+        if (webSocket) {
+          webSocket.send("keepalive");
+        } else {
+          clearInterval(keepAliveIntervalId);
+        }
+      },
+      // Set the interval to 20 seconds to prevent the service worker from becoming inactive.
+      20 * 1000
+    );
+  }
 
   chrome.scripting
     .registerContentScripts([...getScriptsToRegister()])
@@ -25,7 +38,7 @@ chrome.runtime.onInstalled.addListener(async () => {
     ws.onopen = function () {
       console.log("Connected to the server");
       ws.send("Hello, Server!");
-      keepAlive();
+      keepAlive(ws);
     };
 
     // Event listener for messages from the server
