@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeaderWithLogo from "./HeaderWithLogo";
 import Footer from "./Footer";
 import Chats from "./Chats";
@@ -12,15 +12,52 @@ function MainBody(props) {
     activeChat: undefined,
   });
   let [isVisible, setIsVisible] = useState(false);
+  let [chats, setChats] = useState([]);
   let getAndSetChats = () => {
     let allChats = document.querySelectorAll("div[data-message-author-role]");
     let segmentizedChats = [];
-
-    for (let i = 0; i < allChats.length; i += 2) {
-      segmentizedChats.push({ user: allChats[i], assistant: allChats[i + 1] });
-    }
-    return segmentizedChats;
+    allChats.forEach((chat, index) => {
+      if (chat.dataset.messageAuthorRole == "user") {
+        // userTexts.push({ chat: chat, index: index });
+        let assistantTexts = [];
+        for (let i = index + 1; i < allChats.length; i++) {
+          if (allChats[i].dataset.messageAuthorRole == "user") {
+            break;
+          } else {
+            assistantTexts.push(allChats[i]);
+          }
+        }
+        segmentizedChats.push({
+          user: chat,
+          assistant: assistantTexts,
+        });
+      }
+    });
+    // return segmentizedChats;
+    setChats(segmentizedChats);
   };
+  const handleDivChange = () => {
+    if (
+      document.querySelectorAll(
+        "div[data-message-author-role] .result-streaming"
+      ).length == 0
+    ) {
+      console.log("Div content has changed!");
+      getAndSetChats();
+    }
+  };
+  useEffect(() => {
+    getAndSetChats();
+    const observer = new MutationObserver(handleDivChange);
+    const targetDiv = document.getElementById("__next");
+    const config = {
+      childList: true, // Watch for addition or removal of child nodes
+      subtree: true, // Observe changes within the target node and its descendants
+    };
+    observer.observe(targetDiv, config);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <ActiveChatContext.Provider
       value={{ activeChatContext, setActiveChatContext }}
@@ -70,7 +107,7 @@ function MainBody(props) {
             {activeChatContext.isActiveChat && activeChatContext.activeChat ? (
               <ActiveChat />
             ) : (
-              <Chats allChats={[...getAndSetChats()]} />
+              <Chats allChats={chats} />
             )}
             <Footer />
           </div>

@@ -89,9 +89,9 @@ function ActiveChat(props) {
           </div>
           <div className="h-full">
             <p className="text-sm h-[90%] pb-60 overflow-scroll">
-              {activeChatContext.activeChat.assistant.textContent
-                .replace(/\s+/g, " ")
-                .trim()}
+              {activeChatContext.activeChat.assistant.map((chat) =>
+                chat.textContent.replace(/\s+/g, " ").trim()
+              )}
             </p>
           </div>
         </div>
