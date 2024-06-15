@@ -14,11 +14,13 @@ function ActiveChat(props) {
     }
   }, [isExpanded]);
   return (
-    <div className="font-theme-primary-font px-4 h-[87%]">
+    <div className="font-theme-primary-font px-4 h-[87%] overflow-scroll">
       <div className="space-y-4 h-full">
         <div
           id="addgpt-chat-user"
-          className="p-4 bg-theme-primary-5 shadow-theme-chat-shadow rounded-2xl h-[150px] overflow-hidden relative duration-1000"
+          className={`p-4 bg-theme-primary-5 shadow-theme-chat-shadow rounded-2xl h-[150px]  relative duration-1000 ${
+            isExpanded ? "overflow-scroll" : "overflow-hidden"
+          }`}
         >
           <div className="mb-2">
             <p className="text-xl text-theme-accent font-bold">You</p>
